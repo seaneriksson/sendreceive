@@ -64,31 +64,15 @@
     </style>
 
 <div style="width: 80%; margin: auto; display: flex; flex-direction: column; gap: 20px;">
-    
+    {% for i in range(3) %}
     <div style="border: 2px solid #030303; padding: 15px; font-size: 20px; text-align: center;">
-        <h1 id="bds">Slot 1</h1><br>
-        <div id="msg0"></div>
-        <textarea id="input0" placeholder="Enter message" style="width: 90%; height: 60px; font-size: 34px;"></textarea><br>
-        <button onclick="sendMessage(0)">Send</button>
-        <button onclick="removeMessage(0)">Remove</button>
+        <h1 id="bds">Slot {{ i + 1 }}</h1><br>
+        <div id="msg{{ i }}">{{ messages[i] }}</div>
+        <textarea id="input{{ i }}" placeholder="Enter message" style="width: 90%; height: 60px; font-size: 34px;"></textarea><br>
+        <button onclick="sendMessage({{ i }})">Send</button>
+        <button onclick="removeMessage({{ i }})">Remove</button>
     </div>
-    
-    <div style="border: 2px solid #030303; padding: 15px; font-size: 20px; text-align: center;">
-        <h1 id="bds">Slot 2</h1><br>
-        <div id="msg1">Test 2</div>
-        <textarea id="input1" placeholder="Enter message" style="width: 90%; height: 60px; font-size: 34px;"></textarea><br>
-        <button onclick="sendMessage(1)">Send</button>
-        <button onclick="removeMessage(1)">Remove</button>
-    </div>
-    
-    <div style="border: 2px solid #030303; padding: 15px; font-size: 20px; text-align: center;">
-        <h1 id="bds">Slot 3</h1><br>
-        <div id="msg2">Test 3</div>
-        <textarea id="input2" placeholder="Enter message" style="width: 90%; height: 60px; font-size: 34px;"></textarea><br>
-        <button onclick="sendMessage(2)">Send</button>
-        <button onclick="removeMessage(2)">Remove</button>
-    </div>
-    
+    {% endfor %}
 </div>
 
 
