@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BCIT Receiver</title>
+    <style>
+        img {
+            width: 150px;
+            height: 210px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="bdr" >BCIT Text Proxy</h1>
+    <p id="desc" >Receiver Site</p>
+    <a href="https://dmarshtesting.pythonanywhere.com" id="senderLink">Sender Link</a>
+
+    <style>
+    #output {
+        white-space: pre-line;
+    }
+    </style>
+
+    <style>
+        #senderLink {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 38px;
+            color: blue;
+            padding: 10px;
+        }
+    </style>
+    <style>
+        #bdr {
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            padding: 10px;
+        }
+    </style>
+
+    <style>
+        #desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            padding: 5px;
+        }
+    </style>
+
+    <img src="/static/BCITLogo.png" alt="BCIT logo" width="20%" height="auto" id="BCITimg"/>
+    <style>
+        #BCITimg {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            font-size: 38px;
+            color: blue;
+            padding: 10px;
+        }
+        .slot-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            }
+
+        .slot-message {
+            font-family: 'Inter', sans-serif;
+            font-size: 128px;
+            margin-top: 5px;
+            }
+    </style>
+
+    <br><br>
+<div style="width: 80%; margin: auto; display: flex; flex-direction: column; gap: 20px; margin-top: 20px;">
+    
+        <div style="border: 2px solid #030303; padding: 15px;">
+            <span class="slot-label">Slot 1</span><br>
+            <div class="slot-message"></div>
+        </div>
+    
+        <div style="border: 2px solid #030303; padding: 15px;">
+            <span class="slot-label">Slot 2</span><br>
+            <div class="slot-message">Test 2</div>
+        </div>
+    
+        <div style="border: 2px solid #030303; padding: 15px;">
+            <span class="slot-label">Slot 3</span><br>
+            <div class="slot-message">Test 3</div>
+        </div>
+    
+</div>
+    <style>
+#output {
+    width: 85%;
+    font-size: 108px;
+    font-family: "Courier New", Courier, monospace;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #f1f1f1;
+    max-height: 700px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 10px;
+    max-width: 75%;
+}
+
+.received {
+    background-color: lightgray;
+    align-self: flex-start;
+}
+
+.sent {
+    background-color: lightblue;
+    align-self: flex-end;
+}
+</style>
+
+    <style>
+        #timeuntil {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+        }
+    </style>
+
+    <style>
+        #timer {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+        }
+    </style>
+
+<script>
+function displayData() {
+fetch('/about')
+    .then(response => response.json())
+    .then(data => {
+        let outputElement = document.getElementById("output");
+        outputElement.innerHTML = data.shared_text.replace('\n', '<br>');
+    })
+        .catch(error => {
+            console.error('Error:', error);
+    });
+}
+
+window.onload = displayData;
+</script>
+
+    <h1 id=timeuntil>Time until updated result</h1>
+    <p id="timer">15</p>
+
+    <script>
+        function startTimer() {
+            let time = 15;
+
+            function updateTimer() { // Time manager
+                let seconds = time;
+                document.getElementById("timer").textContent = `${seconds < 10 ? "0" : ""}${seconds}`;
+
+                if (time > 0) {
+                    time--;
+                } else {
+                    window.location.reload();
+                }
+            }
+
+            setInterval(updateTimer, 1000);
+        }
+        startTimer();
+    </script>
+
+    <br><br>
+    <button onclick="window.location.reload(true)">Refresh Now</button>
+    <br><br>
+    <button onclick="clearAll()">Clear All</button>
+
+<script>
+function clearAll() {
+    fetch('/clear', { method: 'POST' })
+        .then(() => window.location.reload());
+}
+</script>
+
+</body>
+</html>
