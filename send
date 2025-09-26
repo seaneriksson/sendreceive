@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BCIT Sender</title>
+    <style>
+        img {
+            width: 150px;
+            height: 210px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="bds" >BCIT Text Proxy</h1>
+    <p id="descr">Sender Site</p>
+    <a href="https://dmarsh.pythonanywhere.com/about/" id="receiverLink">Receiver Link</a>
+
+    <style>
+    #output {
+        white-space: pre-line;
+    }
+    </style>
+
+    <style>
+        #receiverLink {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 38px;
+            color: blue;
+            padding: 10px;
+        }
+    </style>
+
+    <style>
+        #bds {
+            font-family: 'Inter', sans-serif;
+            font-size: 26px;
+            padding: 10px;
+        }
+    </style>
+
+    <style>
+        #descr {
+            font-family: 'Inter', sans-serif;
+            font-size: 20px;
+            padding: 5px;
+        }
+    </style>
+
+    <img src="/static/BCITLogo.png" alt="BCIT logo" width="20%" height="auto" id="BCITimg"/>
+    <style>
+        #BCITimg {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            font-size: 38px;
+            color: blue;
+            padding: 10px;
+        }
+    </style>
+
+<div style="width: 80%; margin: auto; display: flex; flex-direction: column; gap: 20px;">
+    
+    <div style="border: 2px solid #030303; padding: 15px; font-size: 20px; text-align: center;">
+        <h1 id="bds">Slot 1</h1><br>
+        <div id="msg0"></div>
+        <textarea id="input0" placeholder="Enter message" style="width: 90%; height: 60px; font-size: 34px;"></textarea><br>
+        <button onclick="sendMessage(0)">Send</button>
+        <button onclick="removeMessage(0)">Remove</button>
+    </div>
+    
+    <div style="border: 2px solid #030303; padding: 15px; font-size: 20px; text-align: center;">
+        <h1 id="bds">Slot 2</h1><br>
+        <div id="msg1">Test 2</div>
+        <textarea id="input1" placeholder="Enter message" style="width: 90%; height: 60px; font-size: 34px;"></textarea><br>
+        <button onclick="sendMessage(1)">Send</button>
+        <button onclick="removeMessage(1)">Remove</button>
+    </div>
+    
+    <div style="border: 2px solid #030303; padding: 15px; font-size: 20px; text-align: center;">
+        <h1 id="bds">Slot 3</h1><br>
+        <div id="msg2">Test 3</div>
+        <textarea id="input2" placeholder="Enter message" style="width: 90%; height: 60px; font-size: 34px;"></textarea><br>
+        <button onclick="sendMessage(2)">Send</button>
+        <button onclick="removeMessage(2)">Remove</button>
+    </div>
+    
+</div>
+
+
+<script>
+function sendMessage(index) {
+    const text = document.getElementById("input" + index).value;
+    fetch("/process", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ value: text, index: index })
+    }).then(res => res.json()).then(() => {
+        document.getElementById("msg" + index).textContent = text;
+        document.getElementById("input" + index).value = "";
+    });
+}
+
+function removeMessage(index) {
+    fetch("/remove", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ index: index })
+    }).then(res => res.json()).then(() => {
+        document.getElementById("msg" + index).textContent = "";
+    });
+}
+</script>
+
+    <br><br>
+    <button onclick="window.location.reload(true)">Update textbox</button>
+
+    <br><br>
+    <button onclick="clearAll()">Clear All</button>
+
+<script>
+function clearAll() {
+    fetch('/clear', { method: 'POST' })
+        .then(() => window.location.reload());
+}
+</script>
+
+</body>
+</html>
